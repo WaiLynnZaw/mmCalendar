@@ -15,7 +15,7 @@ const official={
  '2026-01-01':'နှစ်သစ်ကူးနေ့','2026-01-04':'လွတ်လပ်ရေးနေ့','2026-02-12':'ပြည်ထောင်စုနေ့','2026-03-02':'တောင်သူလယ်သမားနေ့ / တပေါင်းလပြည့်','2026-03-27':'တပ်မတော်နေ့',
  '2026-04-11':'မဟာသင်္ကြန်ရုံးပိတ်ရက်','2026-04-12':'မဟာသင်္ကြန်ရုံးပိတ်ရက်','2026-04-13':'သင်္ကြန်အကြိုနေ့','2026-04-14':'သင်္ကြန်အကျနေ့','2026-04-15':'သင်္ကြန်အကြတ်နေ့','2026-04-16':'သင်္ကြန်အတက်နေ့','2026-04-17':'မြန်မာနှစ်ဆန်းတစ်ရက်နေ့','2026-04-18':'နှစ်သစ်ကူးရုံးပိတ်ရက်','2026-04-19':'နှစ်သစ်ကူးရုံးပိတ်ရက်','2026-04-30':'ကဆုန်လပြည့်နေ့','2026-05-01':'အလုပ်သမားနေ့','2026-07-19':'အာဇာနည်နေ့','2026-07-29':'ဝါဆိုလပြည့်နေ့','2026-10-25':'သီတင်းကျွတ်ရုံးပိတ်ရက်','2026-10-26':'သီတင်းကျွတ်ရုံးပိတ်ရက်','2026-10-27':'သီတင်းကျွတ်ရုံးပိတ်ရက်','2026-11-23':'တန်ဆောင်မုန်းရုံးပိတ်ရက်','2026-11-24':'တန်ဆောင်မုန်းရုံးပိတ်ရက်','2026-12-04':'အမျိုးသားနေ့','2026-12-25':'ခရစ္စမတ်နေ့'
 };
-// Myanmar lunisolar conversion based on the published modern Myanmar calendar algorithm constants.
+// Myanmar solar-year count uses the published Myanmar era constants.
 function mmDate(d){
  const jd=Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000)+2440587.5);
  const SY=1577917828/4320000, MOON=1954168.050623;
@@ -36,7 +36,7 @@ function mmDate(d){
  const days=jd-yearStart+1;
  const monthLens=yearType===0?[29,30,29,30,29,30,29,30,29,30,29,30]:[29,30,29,30,29,30,29,30,29,30,29,30,30];
  let left=days,month=1; for(;month<=monthLens.length&&left>monthLens[month-1];month++)left-=monthLens[month-1];
- return {year:my+1182,month,day:left,phase:left===15?'လပြည့်':left===monthLens[month-1]?'လကွယ်':left<15?'လဆန်း':'လဆုတ်'};
+ return {year:my,month,day:left,phase:left===15?'လပြည့်':left===monthLens[month-1]?'လကွယ်':left<15?'လဆန်း':'လဆုတ်'};
 }
 function omen(d){const w=d.getDay(), m=mmDate(d).month; const yaza=(m+w)%7===0; const pyat=(m+w)%7===1; const ng=['အရှေ့','တောင်','အနောက်','မြောက်'][Math.floor((Math.max(1,m)-1)/3)%4]; return {yaza,pyat,ng};}
 function getInfo(d){const m=mmDate(d); const mo=MO[(m.month-1)%MO.length]; return {my:`${mynum(m.day)} ${mo} ${mynum(m.year)} ခု`,phase:m.phase,year:m.year,month:m.month,raw:m};}
